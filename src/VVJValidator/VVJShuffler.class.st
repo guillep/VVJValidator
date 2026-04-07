@@ -1,3 +1,11 @@
+"
+```smalltalk
+
+VVJShuffler new 
+	jar: jar;
+	shuffleUntilDiff: ccFiles.
+```
+"
 Class {
 	#name : 'VVJShuffler',
 	#superclass : 'Object',
