@@ -1,3 +1,19 @@
+"
+```smalltalk
+files := #(
+		'/Users/guille/Downloads/cc31/apache/commons/collections/ArrayStack.java'
+		'/Users/guille/Downloads/cc31/apache/commons/collections/MapUtils.java').
+jar := FileLocator home / 'git/VerveineJ/app/build/libs/VerveineJ-Snapshot.jar'.
+
+model := VVJLoader new
+	jar: jar;
+	paths: files;
+	load.
+
+e := model entityNamed: 'org.apache.commons.collections.ArrayStack.ArrayStack()'.
+e incomingInvocations size
+```
+"
 Class {
 	#name : 'VVJLoader',
 	#superclass : 'Object',
@@ -6,8 +22,8 @@ Class {
 		'outputFilePath',
 		'paths'
 	],
-	#category : 'VVJLoader',
-	#package : 'VVJLoader'
+	#category : 'VVJValidator',
+	#package : 'VVJValidator'
 }
 
 { #category : 'parsing' }

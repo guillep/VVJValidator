@@ -17,6 +17,6 @@ BaselineOfVVJValidator >> baseline: spec [
 			spec repository:
 				'github://pharo-contributions/OSSubprocess:v2.0.1/repository' ].
 
-	spec package: #VVJLoader with: [ 
+	spec package: #VVJValidator with: [ 
 		spec requires: #( OSSubprocess DDMin ) ]
 ]
