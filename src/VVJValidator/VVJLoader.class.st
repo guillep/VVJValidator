@@ -16,9 +16,8 @@ e incomingInvocations size
 "
 Class {
 	#name : 'VVJLoader',
-	#superclass : 'Object',
+	#superclass : 'VVJHandlerClass',
 	#instVars : [
-		'jar',
 		'outputFilePath',
 		'paths'
 	],
@@ -37,18 +36,6 @@ VVJLoader >> initialize [
 
 	super initialize.
 	outputFilePath := (FileSystem workingDirectory / ('output-', UUID new asString)) , 'json'
-]
-
-{ #category : 'accessing' }
-VVJLoader >> jar [
-
-	^ jar
-]
-
-{ #category : 'accessing' }
-VVJLoader >> jar: anObject [
-
-	jar := anObject
 ]
 
 { #category : 'parsing' }
@@ -73,21 +60,27 @@ VVJLoader >> outputFilePath: anObject [
 { #category : 'parsing' }
 VVJLoader >> parse [
 
-	| err |
+	| arguments err |
 	self validate.
-
-	OSSUnixSubprocess new
-			command: '/usr/bin/java';
-			arguments: {
+	
+	arguments := {
 				'-jar'.
 				jar fullName.
 				'-format'.
 				'json'.
 				'-o'.
 				outputFilePath fullName.
-				'-jdkMode'.
-				'-1.7'.
-			}, paths;
+			}.
+	
+	"by default we choose 1.7 version, we could also make it a parameter"
+	jdkMode ifTrue: [ 
+		arguments := arguments , { '-jdkMode'. '-1.7'. } ].
+	
+	arguments := arguments , paths.
+
+	OSSUnixSubprocess new
+			command: '/usr/bin/java';
+			arguments: arguments
 			redirectStdout;
 			redirectStderr;
 			runAndWaitPollingEvery: (Delay forMilliseconds: 50)

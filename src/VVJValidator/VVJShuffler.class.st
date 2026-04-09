@@ -8,9 +8,8 @@ VVJShuffler new
 "
 Class {
 	#name : 'VVJShuffler',
-	#superclass : 'Object',
+	#superclass : 'VVJHandlerClass',
 	#instVars : [
-		'jar',
 		'maxTimes',
 		'firstModel'
 	],
@@ -28,12 +27,6 @@ VVJShuffler >> initialize [
 
 	super initialize.
 	maxTimes := 30
-]
-
-{ #category : 'accessing' }
-VVJShuffler >> jar: aJarPath [
-
-	jar := aJarPath
 ]
 
 { #category : 'accessing' }
