@@ -28,7 +28,7 @@ Class {
 { #category : 'parsing' }
 VVJLoader >> import [
 
-	^ outputFilePath readStreamDo: [ :st | FamixJavaModel new importFromJSONStream: st ].
+	^ self ok: (outputFilePath readStreamDo: [ :st | FamixJavaModel new importFromJSONStream: st ])
 ]
 
 { #category : 'parsing' }
@@ -41,7 +41,9 @@ VVJLoader >> initialize [
 { #category : 'parsing' }
 VVJLoader >> load [
 
-	self parse.
+	| result |
+	result := self parse.
+	result isError ifTrue: [ ^ result ].
 	^ self import
 ]
 
@@ -80,7 +82,7 @@ VVJLoader >> parse [
 
 	OSSUnixSubprocess new
 			command: '/usr/bin/java';
-			arguments: arguments
+			arguments: arguments;
 			redirectStdout;
 			redirectStderr;
 			runAndWaitPollingEvery: (Delay forMilliseconds: 50)
@@ -88,7 +90,8 @@ VVJLoader >> parse [
 				err := errString ].
 			
 	err ifNotEmpty: [ 
-		self error: 'Errors while parsing: ', err ].
+		^ self fail: 'Errors while parsing: ', err ].
+	^ self ok: nil
 ]
 
 { #category : 'accessing' }

@@ -27,13 +27,20 @@ VVJDDMin >> run: files asserting: aBlock [
 
 	| ddmin |
 	ddmin := AnonymousDDMin testing: [ :vvjInputFiles |	
-		| shuffled loader model |
-		shuffled := vvjInputFiles shuffle.
+		| loader model |
 		loader := VVJLoader new
 			jar: jar;
-			paths: files.
+			jdkMode: jdkMode;
+			paths: vvjInputFiles.
 		model := loader load.
 		aBlock value: loader value: model. 
 	].
 	^ ddmin reduce: files
+]
+
+{ #category : 'as yet unclassified' }
+VVJDDMin >> run: files bugPresentIf: aBlock [
+
+	^ self run: files asserting: [ :loader :result | 
+		(aBlock value: loader value: result) not ]
 ]

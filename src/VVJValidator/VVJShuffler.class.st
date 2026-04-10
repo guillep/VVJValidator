@@ -42,41 +42,26 @@ VVJShuffler >> maxTimes: anObject [
 ]
 
 { #category : 'accessing' }
-VVJShuffler >> offending: aModel [
-
-	^ VVJShufflerOffendingResult new
-		shuffler: self;
-		offending: aModel
-]
-
-{ #category : 'accessing' }
-VVJShuffler >> ok [
-
-	^ VVJShufflerOKResult new
-		shuffler: self;
-		yourself
-]
-
-{ #category : 'accessing' }
 VVJShuffler >> shuffle: files until: aBlock [
 
 	| shuffled loader model |
 	
-	maxTimes = 0 ifTrue: [ ^ self ok ].
+	maxTimes = 0 ifTrue: [ ^ self ok: nil ].
 	
-	shuffled := files shuffle.
+	shuffled := files shuffled.
 	
 	('shuffle.log') asFileReference writeStreamDo: [ :str |
 		shuffled do: [ :e | str nextPutAll: e; cr ].
 	].
 	loader := VVJLoader new
 		jar: jar;
+		jdkMode: jdkMode;
 		paths: shuffled.
 	model := loader load.
 	
 	"Should stop?"
-	(aBlock value: loader value: model)
-		ifTrue: [ ^ self offending: model ].
+	(model isError or: [ aBlock value: loader value: model ])
+		ifTrue: [ ^ self fail: model ].
 	
 	"Ok, once more"
 	maxTimes := maxTimes - 1.

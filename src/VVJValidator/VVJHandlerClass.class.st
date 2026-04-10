@@ -12,6 +12,14 @@ Class {
 	#package : 'VVJValidator'
 }
 
+{ #category : 'accessing' }
+VVJHandlerClass >> fail: aModel [
+
+	^ VVJShufflerOffendingResult new
+		shuffler: self;
+		fail: aModel
+]
+
 { #category : 'initialization' }
 VVJHandlerClass >> initialize [ 
 
@@ -41,4 +49,21 @@ VVJHandlerClass >> jdkMode [
 VVJHandlerClass >> jdkMode: anObject [
 
 	jdkMode := anObject
+]
+
+{ #category : 'accessing' }
+VVJHandlerClass >> ok [
+
+	^ VVJShufflerOKResult new
+		shuffler: self;
+		yourself
+]
+
+{ #category : 'accessing' }
+VVJHandlerClass >> ok: value [
+
+	^ VVJShufflerOKResult new
+		shuffler: self;
+		value: value;
+		yourself
 ]
